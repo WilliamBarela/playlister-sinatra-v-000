@@ -37,4 +37,25 @@ class SongsController < ApplicationController
 
     erb :'/songs/show'
   end
+
+  get '/songs/:slug/edit' do
+    @song = Song.find_by_slug(params[:slug])
+    binding.pry
+    erb :'/songs/edit'
+  end
+
+  patch '/songs/:slug' do
+    @song = Song.find_by_slug(params[:slug])
+    @song.artist = Artist.find_or_create_by(:name => params["Artist Name"])
+    @song.genre_ids = params[:genres]
+    @genres = @song.genres
+    
+    if @song.save
+      session[:message] = "Successfully updated song."
+    else
+      session[:message] = "Song NOT updated!"
+    end 
+
+    redirect "/songs/#{@song.slug}"
+  end
 end

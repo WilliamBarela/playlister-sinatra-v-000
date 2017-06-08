@@ -1,16 +1,17 @@
 <h1>Edit your song!</h1>
 
-<form action="/songs" method="post">
-  <label for="Name">Song Name:</label></br>
-  <input id="Name" type="text" name="Name"></br>
+<form action="/songs/<%= @song.slug %>" method="post">
+  <input id="hidden" type="hidden" name="_hidden" value="patch">
+  <label for="Name">Song Name: <%= @song.name %></label></br>
+  <!--<input id="Name" type="text" name="Name" value=<%= @song.name %>></br> -->
 
   <label for="Artist Name">Artist Name:</label></br>
-  <input id="Artist Name" type="text" name="Artist Name"></br>
+  <input id="Artist Name" type="text" name="Artist Name" value=<%= @song.artist.name %>></br>
 
   <label for="genres">Genres:</label></br>
   <% Genre.all.each do |genre| %>
-    <input id="<%= genre.name%>" type="checkbox" name="genres[]" value=<%= genre.id %>><%= genre.name %></input>
+    <input id="<%= genre.name%>" type="checkbox" name="genres[]" value=<%= genre.id %> <%= 'checked' if @song.genres.include?(genre) %>><%= genre.name %></input>
   <% end %>
   </br>
-  <input type="submit" value="Create">
+  <input type="submit" value="Save">
 </form>
